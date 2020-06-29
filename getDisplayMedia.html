@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Check getDisplayMedia</title>
+</head>
+<body>
+<p>Pick which <em>displaySurface</em> constraint to apply to <em>getDisplayMedia</em></p>
+<button id="display">Display</button>
+<button id="application">Application</button>
+<button id="window">Window</button>
+<button id="browser">Browser</button>
+<input type="checkbox" id="audioCapture" value="audioCapture">
+<label for="audioCapture">Audio</label>
+<h3>Result</h3>
+<p id="result"></p>
+<h3>Display Surface Video Track Details</h3>
+<p id="displaySettings"></p>
+<h3>Audio Capture Track Details</h3>
+<p id="audioSettings"></p>
+
+
+<script>
+    const result = document.getElementById('result');
+    const displaySettings = document.getElementById('displaySettings');
+    const audioSettings = document.getElementById('audioSettings');
+    const audioCapture = document.getElementById('audioCapture');
+
+
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => button.addEventListener('click', async () => {
+        try {
+            let stream = await navigator.mediaDevices.getDisplayMedia({
+                video: {displaySurface: button.id},
+                audio: audioCapture.checked
+            });
+            console.log(stream.getTracks());
+
+            let trackSettings = stream.getVideoTracks()[0].getSettings();
+            result.innerHTML = `You asked for <strong>${button.id}</strong> and got <strong>${trackSettings.displaySurface}</strong>`;
+
+            // Show all video and audio track settings - there should only be a single track on each max
+            let videoDetails = "";
+            stream.getVideoTracks().forEach((track, i) => {
+                videoDetails += `<strong>Track ${i}</strong>`;
+                videoDetails += JSON.stringify(track.getSettings(), null, '<br/>').replace(/["{},]/g, "");
+            });
+            displaySettings.innerHTML = videoDetails === "" ? "No video track captured" : videoDetails;
+
+            let audioDetails = "";
+            stream.getAudioTracks().forEach((track, i) => {
+                audioDetails += `<strong>Track ${i}</strong>`;
+                audioDetails += JSON.stringify(track.getSettings(), null, '<br/>').replace(/["{},]/g, "");
+            });
+            audioSettings.innerHTML = audioDetails === "" ? "No audio track captured" : audioDetails;
+
+        } catch (e) {
+            result.innerText = e;
+            console.error(e);
+        }
+    }));
+</script>
+</body>
+</html>
