@@ -42,6 +42,7 @@
 <div>
     <video controls playsinline autoplay hidden id="recordPlayback"></video>
 </div>
+<!--ToDo: inject mediaRecorder polyfill for Safari-->
 <div id="recordControls">
     <span id="recordStatus"></span>
     <button class="recordBtn" id="recordStart">Record</button>
@@ -49,6 +50,6 @@
     <button class="recordBtn" id="recordStop" disabled>Stop</button>
     <button class="recordBtn" id="recordPlay" disabled>Play</button>
     <button class="recordBtn" id="recordSave" disabled>Save</button>
-    <script src="recorder.js"></script>
+    <script src="static/recorder.js"></script>
 </div>
 </html>

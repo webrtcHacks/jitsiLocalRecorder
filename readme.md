@@ -1,6 +1,6 @@
 # Local Jitsi Recording and getDisplayMedia experiments
 
-See [webrtcHacks](https://webrtchacks.com) for full details. 
+See the webrtcHacks [post](https://webrtchacks.com/jitsi-recording-getdisplaymedia-audio) for full details. 
 
 ## Local Jitsi Meet Recording
 

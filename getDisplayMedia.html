@@ -6,12 +6,22 @@
 </head>
 <body>
 <p>Pick which <em>displaySurface</em> constraint to apply to <em>getDisplayMedia</em></p>
-<button id="display">Display</button>
-<button id="application">Application</button>
-<button id="window">Window</button>
-<button id="browser">Browser</button>
-<input type="checkbox" id="audioCapture" value="audioCapture">
-<label for="audioCapture">Audio</label>
+<p>
+    <button id="display">Display</button>
+    <button id="application">Application</button>
+    <button id="window">Window</button>
+    <button id="browser">Browser</button>
+</p>
+<p>
+    <label for="frameRate">Frame rate</label>
+    <input id="frameRate" type="text" size="2"/>
+</p>
+<p>
+    <input type="checkbox" id="audioCapture" value="audioCapture" checked>
+    <label for="audioCapture">Audio</label>
+</p>
+<p><em><span id="mode"></span></em></p>
+
 <h3>Result</h3>
 <p id="result"></p>
 <h3>Display Surface Video Track Details</h3>
@@ -19,11 +29,12 @@
 <h3>Audio Capture Track Details</h3>
 <p id="audioSettings"></p>
 
-
 <script>
+
     const result = document.getElementById('result');
     const displaySettings = document.getElementById('displaySettings');
     const audioSettings = document.getElementById('audioSettings');
+    const frameRate = document.getElementById('frameRate');
     const audioCapture = document.getElementById('audioCapture');
 
 
@@ -31,9 +42,10 @@
     buttons.forEach(button => button.addEventListener('click', async () => {
         try {
             let stream = await navigator.mediaDevices.getDisplayMedia({
-                video: {displaySurface: button.id},
+                video: {displaySurface: button.id, frameRate: frameRate.value > 0 ? frameRate.value : null},
                 audio: audioCapture.checked
             });
+                //.then(s=>stream=s); // ToDo: add support for Safari
             console.log(stream.getTracks());
 
             let trackSettings = stream.getVideoTracks()[0].getSettings();

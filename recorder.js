@@ -75,15 +75,15 @@ start.addEventListener('click', async ()=> {
         stopCapture();
     });
 
-    recorder.start(100);
+    recorder.start();
     console.log("started recording");
     start.innerText = "Recording";
 
     start.disabled = true;
     pause.disabled = false;
-    play.disabled = false;
     stop.disabled = false;
-    save.disabled = false;
+    play.disabled = true;
+    save.disabled = true;
 });
 
 
@@ -94,9 +94,15 @@ const stop = document.getElementById('recordStop');
 function stopCapture(){
     console.log("Stopping recording");
     recorder.stop();
-    stop.disabled = true;
+
     start.disabled = false;
+    pause.disabled = true;
+    stop.disabled = true;
+    play.disabled = false;
+    save.disabled = false;
+
     start.innerText = "Record";
+    pause.innerText = "Pause";
 
 }
 stop.addEventListener('click', stopCapture);
@@ -108,13 +114,16 @@ const pause = document.getElementById('recordPause');
 pause.addEventListener('click', ()=>{
     if(recorder.state ==='paused'){
         recorder.resume();
-        recorder.innerText = "Pause"
+        pause.innerText = "Pause"
     }
     else if (recorder.state === 'recording'){
         recorder.pause();
-        recorder.innerText = "Resume"
+        pause.innerText = "Resume"
 
     }
+    else
+        console.error(`recorder in unhandled state: ${recorder.state}`);
+
     console.log(`recorder ${recorder.state === 'paused' ? "paused" : "recording"}`);
 
 });
