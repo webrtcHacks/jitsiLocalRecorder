@@ -47,7 +47,7 @@ start.addEventListener('click', async ()=> {
 
     try {
         gumStream = await navigator.mediaDevices.getUserMedia({video: false, audio: true});
-        gdmStream = await navigator.mediaDevices.getDisplayMedia({video: {displaySurface: "browser"}, audio: true});
+        gdmStream = await navigator.mediaDevices.getDisplayMedia({video: {displaySurface: "browser"}, audio: {channelCount: 2}});
 
     } catch (e) {
         console.error("capture failure", e);
